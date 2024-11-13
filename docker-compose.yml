@@ -1,0 +1,6 @@
+version: "2.30.3"
+services:
+  non-code:
+    build: .
+    ports:
+      - "3000:3000"
