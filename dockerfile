@@ -1,5 +1,5 @@
 FROM python:3.9
-COPY . /test
-WORKDIR /test
-RUN pip install django
-CMD python main.py
+COPY . /app
+WORKDIR /app
+
+CMD python main.py && python -m pip install django && python non_code/manage.py runserver 0.0.0.0:3000
