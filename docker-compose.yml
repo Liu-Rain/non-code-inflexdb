@@ -1,11 +1,13 @@
 version: "2.30.3"
 services:
   non-code:
-    build: .
+    build: 
+      context: ./non_code
+      dockerfile: ./Dockerfile.non_code
     ports:
       - "3000:3000"
     volumes:
-      - ./:/app:ro
+      - ./non_code:/app:ro
   influxdb2:
     image: influxdb:2
     #ports:
@@ -23,6 +25,13 @@ services:
       - type: volume
         source: influxdb2-config
         target: /etc/influxdb2
+  frontend:
+    build: 
+      context: ./frontend
+      dockerfile: ./Dockerfile.frontend
+    ports:
+      - "4000:4000"
+
 
 volumes:
   influxdb2-data:

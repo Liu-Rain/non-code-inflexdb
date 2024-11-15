@@ -1,0 +1,5 @@
+FROM python:3.9
+WORKDIR /app
+COPY . .
+CMD python -m pip install django && python manage.py runserver 0.0.0.0:3000
+

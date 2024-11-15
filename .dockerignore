@@ -2,3 +2,6 @@
 .git
 .gitignore
 Dockerfile
+/non_code/Dockerfile.non_code
+/frontend/Dockerfile.frontend
+/frontend/node_modules
