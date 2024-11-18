@@ -1,88 +1,76 @@
 import React, { useState } from 'react';
+import axios from 'axios';
+
+//const marketplaceUrl = process.env.MARKETPLACE_URL || "http://localhost:4000";
+
+
 
 const LoginPage = () => {
-    const [email, setEmail] = useState('');
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('Email:', email, 'Password:', password);
-        // You can replace this with actual login logic
+        console.log('Username:', username, 'Password:', password);
+        // Example data to send
+        const auth = {
+            username: username,
+            password: password,
+        };
+    
+        try {
+            const url = "http://localhost:3000/login/"; // Ensure this matches your API's endpoint
+            const response = await axios.post(url, auth, {
+                withCredentials: true, // Enables sending cookies with the request if required by the server
+                headers: {
+                    'Content-Type': 'application/json', // Ensure the server expects JSON
+                },
+            });
+
+            // Log the response
+            console.log('Response Status:', response.status);
+            console.log('Response Data:', response.data);
+
+            // Handle success logic (e.g., redirecting the user or updating UI)
+        } catch (error) {
+            // Error handling
+            if (error.response) {
+                console.error('Error Response Data:', error.response.data);
+                console.error('Error Status Code:', error.response.status);
+            } else {
+                console.error('Error Message:', error.message);
+            }
+        }
     };
 
     return (
-        <div style={styles.container}>
-            <h1 style={styles.title}>Login</h1>
-            <form style={styles.form} onSubmit={handleSubmit}>
-                <div style={styles.inputGroup}>
-                    <label style={styles.label}>Email:</label>
+        <div className="login-container">
+            <h1 className="title">Login</h1>
+            <form className="form" onSubmit={handleSubmit}>
+                <div className="inputGroup">
+                    <label className="label">Username:</label>
                     <input
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        style={styles.input}
+                        className="input"
+                        type="text"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
                         required
                     />
                 </div>
-                <div style={styles.inputGroup}>
-                    <label style={styles.label}>Password:</label>
+                <div className="inputGroup">
+                    <label className="label">Password:</label>
                     <input
                         type="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        style={styles.input}
+                        className="input"
                         required
                     />
                 </div>
-                <button type="submit" style={styles.button}>Login</button>
+                <button type="submit" className="button">Login</button>
             </form>
         </div>
     );
-};
-
-
-const styles = {
-    container: {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: '100vh',
-        backgroundColor: '#f5f5f5',
-    },
-    title: {
-        marginBottom: '20px',
-        fontSize: '24px',
-    },
-    form: {
-        width: '300px',
-        display: 'flex',
-        flexDirection: 'column',
-    },
-    inputGroup: {
-        marginBottom: '15px',
-    },
-    label: {
-        marginBottom: '5px',
-        display: 'block',
-        fontSize: '14px',
-    },
-    input: {
-        width: '100%',
-        padding: '8px',
-        fontSize: '14px',
-        borderRadius: '4px',
-        border: '1px solid #ccc',
-    },
-    button: {
-        padding: '10px',
-        fontSize: '16px',
-        color: '#fff',
-        backgroundColor: '#007BFF',
-        border: 'none',
-        borderRadius: '4px',
-        cursor: 'pointer',
-    },
 };
 
 export default LoginPage;

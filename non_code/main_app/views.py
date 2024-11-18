@@ -13,21 +13,21 @@ def login(request):
         messages.success(request, f"username={username}, password={password}")
 
         url = "http://influxdb2:8086/api/v2/signin"
-        response = requests.post(url, auth=(username, password)) #post is send request to fill in website's username and password to get response
+#       response = requests.post(url, auth=(username, password)) #post is send request to fill in website's username and password to get response
         #get is send request by the arguments directly login, in influxdb, we need token to login
-        cookies = response.cookies
+#        cookies = response.cookies
 
-        if response.status_code == 204:
-            messages.success(request, f"success! username={username}, password={password} coockies={cookies},,,,,{type(cookies)}")
-        else:
-            messages.success(request, f"Failed to sign in. Status code: {response.status_code}, Response: {response.text}")
+#      if response.status_code == 204:
+#            messages.success(request, f"success! username={username}, password={password} coockies={cookies},,,,,{type(cookies)}")
+#        else:
+#            messages.success(request, f"Failed to sign in. Status code: {response.status_code}, Response: {response.text}")
 
-        session_url = "http://influxdb2:8086/api/v2/me"
-        response = requests.get(session_url, cookies=cookies)
-        messages.success(request, f"Status code: {response.status_code}, Response: {response.text}")
-        cookie_dict = {c.name: c.value for c in cookies}#have to convert to dict to find value
-        messages.success(request, f"{cookie_dict}")
-        return redirect(f'/query/?cookies={cookie_dict["influxdb-oss-session"]}')
+#        session_url = "http://influxdb2:8086/api/v2/me"
+#        response = requests.get(session_url, cookies=cookies)
+#        messages.success(request, f"Status code: {response.status_code}, Response: {response.text}")
+#        cookie_dict = {c.name: c.value for c in cookies}#have to convert to dict to find value
+#        messages.success(request, f"{cookie_dict}")
+        #return redirect(f'/query/?cookies={cookie_dict["influxdb-oss-session"]}')
 
 
     # Check if credentials match
