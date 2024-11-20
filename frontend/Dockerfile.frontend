@@ -5,4 +5,4 @@ RUN npm install
 RUN npm install axios
 RUN npm install cors
 EXPOSE 4000
-CMD npm run dev 
+CMD npm run dev

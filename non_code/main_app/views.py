@@ -1,33 +1,41 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.contrib import messages
 import requests
+from django.views.decorators.csrf import csrf_exempt
+import json
+@csrf_exempt
+
 
 # Create your views here.
 #Views is a request handler
 
 def login(request):
+
+    
     if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        messages.success(request, f"username={username}, password={password}")
+            try:
+                body = json.loads(request.body)
+                
+                # Parse the JSON body
+                username = body.get('username')
+                password = body.get('password')
 
-        url = "http://influxdb2:8086/api/v2/signin"
-#       response = requests.post(url, auth=(username, password)) #post is send request to fill in website's username and password to get response
-        #get is send request by the arguments directly login, in influxdb, we need token to login
-#        cookies = response.cookies
-
-#      if response.status_code == 204:
-#            messages.success(request, f"success! username={username}, password={password} coockies={cookies},,,,,{type(cookies)}")
-#        else:
-#            messages.success(request, f"Failed to sign in. Status code: {response.status_code}, Response: {response.text}")
-
-#        session_url = "http://influxdb2:8086/api/v2/me"
-#        response = requests.get(session_url, cookies=cookies)
-#        messages.success(request, f"Status code: {response.status_code}, Response: {response.text}")
-#        cookie_dict = {c.name: c.value for c in cookies}#have to convert to dict to find value
-#        messages.success(request, f"{cookie_dict}")
-        #return redirect(f'/query/?cookies={cookie_dict["influxdb-oss-session"]}')
+                url = "http://influxdb2:8086/api/v2/signin"
+                response = requests.post(url, auth=(username, password))
+                # Authenticate user (dummy example)
+                if response.status_code == 204:
+                    cookies_response = response.cookies
+                    cookie_dict = {c.name: c.value for c in cookies_response}
+                    cookies = cookie_dict["influxdb-oss-session"]
+                    return JsonResponse({'message': 'Login successful!', "cookies": f"{cookies}"}, status=200)
+                else:
+                    return JsonResponse({'message': 'Invalid username or password.'}, status=401)
+                    
+            except Exception:
+                return JsonResponse({'message': 'Body is wrong'}, status=400)
+    else:
+        return JsonResponse({'message': 'Only POST requests are allowed.'}, status=405)
 
 
     # Check if credentials match
@@ -35,7 +43,7 @@ def login(request):
     #    return f"Welcome, {username}!"
     #else:
     #    return "Invalid username or password.", 401
-    return render(request, "login.html")
+    #return render(request, "login.html")
 
 def home(request):
     return HttpResponse("HI!!!")
