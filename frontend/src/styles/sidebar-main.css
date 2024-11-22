@@ -1,0 +1,18 @@
+.target-component {
+  width: 500px;
+  height: 400px;
+  border: 2px dashed #ccc;
+  position: relative; /* To enable absolute positioning for child elements */
+  overflow: hidden; /* Prevent items from being placed outside the box */
+}
+
+.dropped-item {
+  background-color: #f9f9f9;
+  padding: 5px;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  transform: translate(-50%, -50%); /* Center the item at the drop position */
+  cursor: move;
+  position: absolute; /* To position items dynamically */
+}
+  

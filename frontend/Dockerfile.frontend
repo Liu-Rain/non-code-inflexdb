@@ -4,5 +4,8 @@ COPY . .
 RUN npm install
 RUN npm install axios
 RUN npm install cors
+RUN npm install react-router-dom
+RUN npm install 
+RUN npm install @xyflow/react
 EXPOSE 4000
 CMD npm run dev
