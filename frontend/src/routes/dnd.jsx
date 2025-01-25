@@ -166,6 +166,10 @@ const DnDFlow = () => {
     },
     [screenToFlowPosition, data_dict],
   );
+
+
+
+  
  
   return (
     <div className="dndflow">
@@ -192,12 +196,27 @@ const DnDFlow = () => {
           <Controls />
           <Background />
         </ReactFlow>
+        {/*<ReceiverComponent data={receiverData} />*/}
       </div>
       <Sidebar />
     </div>
   );
 };
  
+
+const ReceiverComponent = ({ data }) => {
+  return (
+    <div className="receiver-component">
+      <h2>Received Data:</h2>
+      {data ? (
+        <pre>{JSON.stringify(data, null, 2)}</pre>
+      ) : (
+        <p>No data received yet.</p>
+      )}
+    </div>
+  );
+};
+
 export default () => (
   <ReactFlowProvider>
     <DnDProvider>

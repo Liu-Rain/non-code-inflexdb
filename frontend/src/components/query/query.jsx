@@ -1,4 +1,13 @@
 import axios from 'axios';
+import { QueryContext } from './queryContext';
+import { useContext } from 'react';
+
+export default () => {
+   const parameter = useContext(QueryContext);
+   console.log(parameter)
+   return
+}
+
 
 /*
 const Query = ({ cookies }) => {

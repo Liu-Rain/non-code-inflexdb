@@ -4,7 +4,7 @@ import React, { createContext, useState } from 'react';
 export const QueryContext = createContext();
 
 // Context Provider Component
-export const QueryProvider = ({ children }) => {
+/*export const QueryProvider = ({ children }) => {
     const [parameter, setParameter] = useState("default value");
 
     return (
@@ -12,4 +12,4 @@ export const QueryProvider = ({ children }) => {
             {children}
         </QueryContext.Provider>
     );
-};
+};*/
