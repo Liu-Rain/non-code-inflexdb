@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useParams } from "react-router-dom";
+import query from '../query/query';
 
 import {
   Handle,
@@ -14,14 +15,16 @@ import {
    
 function BucketNode({ id, data }) {
   const { updateNodeData } = useReactFlow();
-  
+  const Bucket_list = query(data.flow.Bucket.cookies);
+  const Bucket_array = Object.keys(Bucket_list);
 
+  console.log(Bucket_array)
   console.log(data)
   return (
     <div
       className="dndnode"
     >
-      <div>Bucket {data.flows}</div>
+      <div>Bucket {Bucket_array}</div>
       <Handle type="source" position={Position.Bottom} id="output" />
     </div>
   );

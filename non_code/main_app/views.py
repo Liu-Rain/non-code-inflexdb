@@ -11,8 +11,6 @@ import json
 #Views is a request handler
 
 def login(request):
-
-    
     if request.method == 'POST':
             try:
                 body = json.loads(request.body)
@@ -48,8 +46,10 @@ def login(request):
 def home(request):
     return HttpResponse("HI!!!")
 
+@csrf_exempt #this is how to fix 403 forbidden by 
 def query(request):
-    cookies_value = request.GET.get('cookies')
+    body = json.loads(request.body)
+    cookies_value = body.get('cookies')
     cookies = requests.cookies.RequestsCookieJar()
     cookies.set(
         name="influxdb-oss-session",
@@ -60,24 +60,27 @@ def query(request):
 
 
     headers = {
-            "Content-Type": "application/vnd.flux",
+            "Content-Type": "application/json",
             "Accept": "application/json",
         }
-    data = """
-            from(bucket: "home")
-            |> range(start: -1h)
-            |> filter(fn: (r) => r._measurement == "measurement_name")
-            """
+    url = "http://influxdb2:8086/api/v2/buckets" #need to soft code org
+
+
+    response = requests.get(url, headers=headers, cookies=cookies) #use get instead of post
+    data = response.json()
+    data = data.get("buckets")
+    bucket_dict = dict()
+    if data:
+        for bucket in data:  # Adjust based on response structure
+            bucket_dict.update({bucket['name']:bucket['id']})
+
     
-    url = "http://influxdb2:8086/api/v2/query?org=docs" #need to soft code org
+    #if response.status_code == 200:
+    #    messages.success(request, f"Query Results:={response.text}")
+    #    return JsonResponse({"status": f'{response.status_code}'}, status=200)
 
-    response = requests.post(url, headers=headers, cookies=cookies, data=data)
+    #else:
+    #    messages.success(request, f"Error:={response.status_code}, {response.text}")
 
-    if response.status_code == 200:
-        messages.success(request, f"Query Results:={response.text}")
-
-    else:
-        messages.success(request, f"Error:={response.status_code}, {response.text}")
-
-    return render(request, "query.html")
+    return JsonResponse({"messages": f'{response.text}', "code": f'{response.status_code}', "cookies" : f'{cookies}', "data": bucket_dict}, status = 200)
     

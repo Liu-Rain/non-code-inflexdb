@@ -130,3 +130,4 @@ CORS_ALLOWED_ORIGINS = [
     'http://localhost:4000',  # React development server
 ]
 CORS_ALLOW_CREDENTIALS = True
+
