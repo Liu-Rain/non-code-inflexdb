@@ -5,6 +5,7 @@ import {
   Position,
   useHandleConnections,
   useNodesData,
+  useNodeConnections,
 } from '@xyflow/react';
 import Query from "./query"
 //import { isTextNode, type MyNode } from './initialElements';
@@ -17,7 +18,7 @@ function ResultNode() {
   const [parameter, setParameter] = useState("default value");
 
 
-  const connections = useHandleConnections({
+  const connections = useNodeConnections({
     type: 'target',
     
   });
@@ -26,8 +27,7 @@ function ResultNode() {
     connections.map((connection) => connection.source),
   );
 
-  console.log(nodesData)
-  console.log(nodesData[0])
+
   const{id, type, data} = nodesData[0]? nodesData[0]: "0";
   const onConnect = useCallback(
     () => {

@@ -11,7 +11,7 @@ import {
   reconnectEdge,
   useNodesData,
 } from '@xyflow/react';
- 
+
 import '@xyflow/react/dist/style.css';
 import '../styles/draganddrop.css';
 
@@ -19,14 +19,18 @@ import Sidebar from '../components/dnd/Sidebar';
 import { DnDProvider, useDnD } from '../components/dnd/DnDContext';
 
 import ResultNode from '../components/query/ResultNode';
+import BucketNode from '../components/nodes/BucketNode';
+
+
+
 
 const initialNodes = [
 
-  { id: '1', type: 'input', data: {label: "Meansurements", name: "meansurement", param: 'param1', flow:{ Meansurements : 'param1'}}, position: { x: 250, y: 5 }, },
+  { id: '1', type: 'bucket', data: {label: "bucket", name: "bucket", param: 'param1', flow:{ Bucket : "bucket"}}, position: { x: 250, y: 5 }, },
   { id: 'result', type: 'result', data: {label: "result_lable", name: "result_name", param: 'result_param', flow:{result : "_"}}, position: { x: 300, y: -75 }, },
 ]; //can only use "data" to store info
 
-const nodeTypes = {  result: ResultNode,}
+const nodeTypes = {  result: ResultNode, bucket: BucketNode};
 
 //const nodeData = useNodesData(); 
 
@@ -57,7 +61,9 @@ const DnDFlow = () => {
             return { ...node, data: { ...node.data, flow: {...node_data.data.flow, [node.data.label]: node.data.param},},};}
           return node;
         }),
+        
       );
+      
     },
 
 
