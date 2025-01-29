@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useParams } from "react-router-dom";
 import query from '../query/query';
 
@@ -17,6 +17,14 @@ function BucketNode({ id, data }) {
   const { updateNodeData } = useReactFlow();
   const Bucket_list = query(data.flow.Bucket.cookies);
   const Bucket_array = Object.keys(Bucket_list);
+
+  useEffect(() => {
+    updateNodeData(id, (node) => {
+      return { ...node.data, param: Bucket_array  };
+    });
+    
+  }, [Bucket_list]);
+
 
   console.log(Bucket_array)
   console.log(data)

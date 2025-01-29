@@ -1,4 +1,4 @@
-import React, { useRef, useCallback } from 'react';
+import React, { useRef, useCallback, useState } from 'react';
 import {
   ReactFlow,
   ReactFlowProvider,
@@ -21,6 +21,7 @@ import { DnDProvider, useDnD } from '../components/dnd/DnDContext';
 //import ResultNode from '../components/query/ResultNode';
 import BucketNode from '../components/nodes/BucketNode';
 
+import ContextMenu from '../components/nodes/Menu';
 
 
 
@@ -38,14 +39,14 @@ let id = 0;
 const getId = () => `dndnode_${id++}`;
  
 const DnDFlow = () => {
-  const reactFlowWrapper = useRef(null);
   const edgeReconnectSuccessful = useRef(true);
-
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const { screenToFlowPosition } = useReactFlow();
   const [data_dict] = useDnD();
   const [type, label, name, param, flow] = [data_dict.type, data_dict.label, data_dict.name, data_dict.param, data_dict.flow]
+  const [menu, setMenu] = useState(null);
+  const ref = useRef(null);
 
 
   const onConnect = useCallback(
@@ -173,21 +174,45 @@ const DnDFlow = () => {
     [screenToFlowPosition, data_dict],
   );
 
+  const onNodeClick = useCallback(
+    (event, node) => {
+      // Prevent native context menu from showing
+      event.preventDefault();
+ 
+      // Calculate position of the context menu. We want to make sure it
+      // doesn't get positioned off-screen.
+      console.log(ref.current)
+      const pane = ref.current.getBoundingClientRect();
+      setMenu({
+        id: node.id,
+        top: event.clientY < pane.height - 200 && event.clientY,
+        left: event.clientX < pane.width - 200 && event.clientX,
+        right: event.clientX >= pane.width - 200 && pane.width - event.clientX,
+        bottom:
+          event.clientY >= pane.height - 200 && pane.height - event.clientY,
+      });
+    },
+    [setMenu],
+  );
+
+  const onPaneClick = useCallback(() => setMenu(null), [setMenu]);
 
 
   
  
   return (
     <div className="dndflow">
-      <div className="reactflow-wrapper" ref={reactFlowWrapper} style={{ width: '50vw', height: '50vh' }}>
+      <div className="reactflow-wrapper" style={{ width: '50vw', height: '50vh' }}>
         <ReactFlow
+          ref={ref}
           nodes={nodes}
           edges={edges}
           onNodesChange={onNodesChange}
           onEdgesChange={onEdgesChange}
           onConnect={onConnect}
-
-          snapToGrid
+          onPaneClick={onPaneClick}
+          onNodeClick={onNodeClick}
+          
           onReconnect={onReconnect}
           onReconnectStart={onReconnectStart}
           onReconnectEnd={onReconnectEnd}
@@ -201,6 +226,8 @@ const DnDFlow = () => {
         >
           <Controls />
           <Background />
+          {menu && <ContextMenu onClick={onPaneClick} {...menu} />}
+
         </ReactFlow>
         {/*<ReceiverComponent data={receiverData} />*/}
       </div>
