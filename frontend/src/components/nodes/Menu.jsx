@@ -7,8 +7,11 @@ export default function ContextMenu({
   left,
   right,
   bottom,
+  list,
   ...props
+  
 }) {
+  console.log(list)
   const { getNode, setNodes, addNodes, setEdges } = useReactFlow();
   const duplicateNode = useCallback(() => {
     const node = getNode(id);
@@ -30,6 +33,9 @@ export default function ContextMenu({
     setNodes((nodes) => nodes.filter((node) => node.id !== id));
     setEdges((edges) => edges.filter((edge) => edge.source !== id));
   }, [id, setNodes, setEdges]);
+
+  
+
  
   return (
     <div
@@ -40,6 +46,15 @@ export default function ContextMenu({
       <p style={{ margin: '0.5em' }}>
         <small>node: {id}</small>
       </p>
+      {list.map((item, index) => (
+        <button
+          key={index}
+          onClick={() => item.onClick && item.onClick(id)}
+          style={{ padding: "5px 10px", cursor: "pointer", borderBottom: "1px solid #ddd" }}
+        >
+          {item}
+        </button>
+        ))}      
       <button onClick={duplicateNode}>duplicate</button>
       <button onClick={deleteNode}>delete</button>
     </div>

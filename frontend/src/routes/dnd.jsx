@@ -167,6 +167,7 @@ const DnDFlow = () => {
         type,
         data: data_dict,
         position,
+        
       };
  
       setNodes((nds) => nds.concat(newNode));
@@ -181,15 +182,15 @@ const DnDFlow = () => {
  
       // Calculate position of the context menu. We want to make sure it
       // doesn't get positioned off-screen.
-      console.log(ref.current)
+      console.log(node.data)
       const pane = ref.current.getBoundingClientRect();
       setMenu({
         id: node.id,
         top: event.clientY < pane.height - 200 && event.clientY,
         left: event.clientX < pane.width - 200 && event.clientX,
         right: event.clientX >= pane.width - 200 && pane.width - event.clientX,
-        bottom:
-          event.clientY >= pane.height - 200 && pane.height - event.clientY,
+        bottom: event.clientY >= pane.height - 200 && pane.height - event.clientY,
+        list : node.data.param,
       });
     },
     [setMenu],
