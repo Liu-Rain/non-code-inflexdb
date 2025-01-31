@@ -14,7 +14,7 @@ export default () => {
     event.dataTransfer.effectAllowed = 'move';
     if (data.type =="bucket"){
       data.flow = {Cookies: cookies}
-    }
+    } 
     setInfo(data);
 
   };
@@ -31,10 +31,10 @@ export default () => {
       <div className="dndnode" onDragStart={(event) => onDragStart(event, {type:"meansurement", label: "", name: "Meansurement", param: 'param12', flow: {Meansurement: "param1"}})} draggable >
         Meansurement 
       </div>
-      <div className="dndnode" onDragStart={(event) => onDragStart(event, {type:"default", label: "", name: "Field", param: 'param2',  flow: {Field: "param2"}})} draggable>
+      <div className="dndnode" onDragStart={(event) => onDragStart(event, {type:"field", label: "", name: "Field", param: 'param2',  flow: {Field: "param2"}})} draggable>
         Fileds
       </div>
-      <div className="dndnode" onDragStart={(event) => onDragStart(event, {type:"default", label: "", name: "Tag", param: 'param3',  flow: {Tag: "param3"}})} draggable>
+      <div className="dndnode" onDragStart={(event) => onDragStart(event, {type:"tag", label: "", name: "Tag", param: 'param3',  flow: {Tag: "param3"}})} draggable>
         Tags
       </div>
       <div className="dndnode output" onDragStart={(event) => onDragStart(event, {type:"output", label: "", name: "Time", param: 'param4',  flow: {Time: "param4"}})} draggable>

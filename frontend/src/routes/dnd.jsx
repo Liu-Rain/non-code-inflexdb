@@ -20,9 +20,11 @@ import { DnDProvider, useDnD } from '../components/dnd/DnDContext';
 
 //import ResultNode from '../components/query/ResultNode';
 import BucketNode from '../components/nodes/BucketNode';
+import FieldNode from '../components/nodes/FieldNode';
+import MeansurementNode from '../components/nodes/MeansurementNode';
 
 import ContextMenu from '../components/nodes/Menu';
-
+import TagNode from '../components/nodes/TagNode';
 
 
 const initialNodes = [
@@ -31,7 +33,7 @@ const initialNodes = [
   //{ id: 'result', type: 'result', data: {label: "result_lable", name: "result_name", param: 'result_param', flow:{result : "_"}}, position: { x: 300, y: -75 }, },
 ]; //can only use "data" to store info
 
-const nodeTypes = {  bucket: BucketNode};
+const nodeTypes = {  bucket: BucketNode, field: FieldNode, meansurement: MeansurementNode, tag: TagNode,};
 
 //const nodeData = useNodesData(); 
 

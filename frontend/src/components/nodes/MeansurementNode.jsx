@@ -13,7 +13,7 @@ import {
 
 
 /* use to create the bucket node */
-function TagNode({ id, data }) {
+function MeansurementNode({ id, data }) {
   const { updateNodeData } = useReactFlow();
   //const Bucket_list = query(data.flow.Cookies);
   //const Bucket_array = Object.keys(Bucket_list);
@@ -26,7 +26,7 @@ function TagNode({ id, data }) {
       className="dndnode"
     >
       <div>
-        Tag
+      Meansurement
         <br />
         {label}
       </div>
@@ -35,4 +35,4 @@ function TagNode({ id, data }) {
   );
 }
   
-export default TagNode;
+export default MeansurementNode;
