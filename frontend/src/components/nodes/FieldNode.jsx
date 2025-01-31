@@ -1,4 +1,7 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
+import { useParams } from "react-router-dom";
+import query from '../query/query';
+
 import {
   Handle,
   Position,
@@ -6,64 +9,35 @@ import {
   useNodesData,
   useReactFlow,
 } from '@xyflow/react';
- 
 
 
 
-
-function CustomHandle({ id, label, onChange }) {
-    const connections = useHandleConnections({
-      type: 'target',
-      id,
-    });
-   
-    const nodeData = useNodesData(connections?.[0].source);
-   
-    useEffect(() => {
-      onChange(nodeData?.data ? nodeData.data : 0); /*if this handle is changing, put data as the parameter into the onChange function*/
-    }, [nodeData]);
-   
-    return (
-      <div>
-        <Handle
-          type="target"
-          position={Position.Top}
-          id={id}
-          className="handle"
-        />
-        <label htmlFor="red" className="label">
-          {label}
-        </label>
-      </div>
-    );
-}
-   
-function Meansurement({ id, data }) {
+/* use to create the bucket node */
+function BucketNode({ id, data }) {
   const { updateNodeData } = useReactFlow();
-  
+  const Bucket_list = query(data.flow.Cookies);
+  const Bucket_array = Object.keys(Bucket_list);
+  useEffect(() => {
+    updateNodeData(id, (node) => {
+      return { ...node.data, param: Bucket_array  };
+    });
+    
+  }, [Bucket_list]);
+  const node = useNodesData(id)
+  const label = node.data.label
+
   return (
     <div
       className="dndnode"
-      style={{
-        background: data.value
-          ? `rgb(${data.value.r}, ${data.value.g}, ${data.value.b})`
-          : 'rgb(0, 0, 0)',
-      }}
     >
-      <div>Meansurements {data}</div>
-      <CustomHandle
-        id="Meansurement"
-        label="R"
-        onChange={(data) => {
-          updateNodeData(id, (node) => {
-            /*return { value: { ...node.data.value, r: value } }; #changer this node's data to {...node.data.value(keep the same), r:value(change r's value)}*/
-            return { data };
-          });
-        }}
-      />
-      <Handle type="source" position="Bottom" id="output" />
+      <div>
+        Bucket 
+        <br />
+        {label}
+      </div>
+      <Handle type="source" position={Position.Bottom} id="output" />
     </div>
   );
 }
   
-export default Meansurement;
+export default BucketNode;
