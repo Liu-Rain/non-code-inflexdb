@@ -5,12 +5,11 @@ import { useContext, useState, useEffect } from 'react';
 
 export default (cookies) => {
     const [list, setList] = useState("")
-    console.log(cookies)
     useEffect(() => {
         const handleSubmit = async () =>{
     
             try {
-                const url = "http://localhost:3000/query/"; // Ensure this matches your API's endpoint
+                const url = "http://localhost:3000/bucketquery/"; // Ensure this matches your API's endpoint
     
                 const response = await axios.post(url, {cookies: cookies}, {
                     withCredentials: true, // Enables sending cookies with the request if required by the server

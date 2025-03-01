@@ -12,7 +12,7 @@ export default function ContextMenu({
   
 }) {
   console.log(list)
-  const { getNode, setNodes, addNodes, setEdges, updateNodeData } = useReactFlow();
+  const { getNode, setNodes, addNodes, setEdges, updateNodeData, getEdges, setNode } = useReactFlow();
   const duplicateNode = useCallback(() => {
     const node = getNode(id);
     const position = {
@@ -35,10 +35,19 @@ export default function ContextMenu({
   }, [id, setNodes, setEdges]);
 
   function targetChoosed(name) {
-    const this_node = getNode(id)
+    let this_node = getNode(id)
+    
     updateNodeData(id, (node) => {
-      return { ...node.data, label: name,flow: {...node.data.flow, [this_node.data.name]: name}};
+      return { ...node.data, label: name, flow: {...node.data.flow, [this_node.data.name]: name}};
     });
+    const followingEdges = getEdges().filter((edge) => edge.source === id);
+    const edges = followingEdges.map((edge, i) => {
+      updateNodeData(edge.target, (target_node) => {
+        return {...target_node.data, flow: {...this_node.data.flow, [this_node.data.name]: name}};
+      });
+      return 0
+    }) // this_node.data seems not update before the edge's node got updated
+  
   }
 
   

@@ -47,7 +47,7 @@ def home(request):
     return HttpResponse("HI!!!")
 
 @csrf_exempt #this is how to fix 403 forbidden by 
-def query(request):
+def bucketquery(request):
     body = json.loads(request.body)
     cookies_value = body.get('cookies')
     cookies = requests.cookies.RequestsCookieJar()

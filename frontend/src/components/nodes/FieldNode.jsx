@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react';
 import { useParams } from "react-router-dom";
-import query from '../query/query';
+import query from '../query/BucketQuery';
 
 import {
   Handle,

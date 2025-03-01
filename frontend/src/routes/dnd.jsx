@@ -1,4 +1,5 @@
 import React, { useRef, useCallback, useState } from 'react';
+import { useOutletContext } from "react-router-dom";
 import {
   ReactFlow,
   ReactFlowProvider,
@@ -27,11 +28,7 @@ import ContextMenu from '../components/nodes/Menu';
 import TagNode from '../components/nodes/TagNode';
 
 
-const initialNodes = [
 
-  { id: '1', type: 'bucket', data: {label: "bucket", name: "bucket", param: 'param1', flow:{ Bucket : "NR7ym05CsCPS505X3tocNfx77EZNjBuxqs7VUfxh7aU3zTXcLy0Cso7y5cxXETBekcodQu_7uJ7iFvrN7eBMBA=="}}, position: { x: 250, y: 5 }, },
-  //{ id: 'result', type: 'result', data: {label: "result_lable", name: "result_name", param: 'result_param', flow:{result : "_"}}, position: { x: 300, y: -75 }, },
-]; //can only use "data" to store info
 
 const nodeTypes = {  bucket: BucketNode, field: FieldNode, meansurement: MeansurementNode, tag: TagNode,};
 
@@ -41,6 +38,13 @@ let id = 0;
 const getId = () => `dndnode_${id++}`;
  
 const DnDFlow = () => {
+  const { cookies } = useOutletContext(); 
+  const initialNodes = [
+
+    { id: '1', type: 'bucket', data: {label: "bucket", name: "Bucket", param: 'param1', flow:{ Cookies : cookies}}, position: { x: 250, y: 5 }, },
+    //{ id: 'result', type: 'result', data: {label: "result_lable", name: "result_name", param: 'result_param', flow:{result : "_"}}, position: { x: 300, y: -75 }, },
+  ]; //can only use "data" to store info
+
   const edgeReconnectSuccessful = useRef(true);
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
@@ -61,7 +65,7 @@ const DnDFlow = () => {
           if (node.id === params.target) {
             // it's important that you create a new node object
             // in order to notify react flow about the change
-            return { ...node, data: { ...node.data, flow: {...node_data.data.flow, [node.data.label]: node.data.param},},};}
+            return { ...node, data: { ...node.data, flow: {...node_data.data.flow, [node.data.name]: node.data.param},},};}
           return node;
         }),
         
@@ -74,72 +78,85 @@ const DnDFlow = () => {
     [nodes, setEdges, setNodes],
   );
     
-  const onReconnectStart = useCallback(() => {
-  edgeReconnectSuccessful.current = false;
-  }, []);
+  const onReconnectStart = useCallback((_, edge) => {
+    edgeReconnectSuccessful.current = false;
+    console.log(edge.source, edge.target);
+    const node_data = nodes.find((node) => node.id === edge.source);
+    const nodeToRemove = nodes.find((node) => node.id === edge.target);
+    const nodeToRemoveLabel = nodeToRemove.data.label;
+    const nodeToRemoveName = nodeToRemove.data.Name;
+
+    const nodeToRemoveParams = nodeToRemove.data.param;
+    
+    const removeflow = (nodeToRemove, nodeToRemoveParams) => { 
+      const nodeToRemoveName = nodeToRemove.data.name;
+      console.log(nodeToRemove, nodeToRemoveName)
+      setNodes((nds) =>
+        nds.map((node) => {
+          if (node.id === edge.target) {
+            // it's important that you create a new node object
+            // in order to notify react flow about the change
+            return { ...node, data: { ...node.data, flow: {[nodeToRemoveName] : nodeToRemoveParams},},};}
+            
+          return node;
+        }),
+    );};
+
+    console.log(nodeToRemoveName, nodeToRemoveParams )
+ 
+    removeflow(nodeToRemove, nodeToRemoveParams)
+  
+  }, [nodes, setEdges, setNodes]);
+
+
+
   
   const onReconnect = useCallback((oldEdge, newConnection) => {
     edgeReconnectSuccessful.current = true;
     const node_data = nodes.find((node) => node.id === newConnection.source);
     const nodeToRemove = nodes.find((node) => node.id === oldEdge.target);
     const nodeToRemoveLabel = nodeToRemove.data.label;
+    const nodeToRemoveName = nodeToRemove.data.name;
+
     const nodeToRemoveParams = nodeToRemove.data.param;
 
 
     setEdges((els) => reconnectEdge(oldEdge, newConnection, els));
 
-    const removeflow = (nodeToRemoveLabel, nodeToRemoveParams) => { 
+    const removeflow = (nodeToRemoveName, nodeToRemoveParams) => { 
       setNodes((nds) =>
         nds.map((node) => {
           if (node.id === oldEdge.target) {
             // it's important that you create a new node object
             // in order to notify react flow about the change
-            return { ...node, data: { ...node.data, flow: {[nodeToRemoveLabel] : nodeToRemoveParams},},};}
+            return { ...node, data: { ...node.data, flow: {[nodeToRemoveName] : nodeToRemoveParams},},};}
           return node;
         }),
       );
     };
 
 
-    removeflow(nodeToRemoveLabel, nodeToRemoveParams)
+    removeflow(nodeToRemoveName, nodeToRemoveParams)
     setNodes((nds) =>
       nds.map((node) => {
         if (node.id === newConnection.target) {
           // it's important that you create a new node object
           // in order to notify react flow about the change
-          return { ...node, data: { ...node.data, flow: {...node_data.data.flow, [node.data.label]: node.data.param},},};}
+          return { ...node, data: { ...node.data, flow: {...node_data.data.flow, [node.data.name]: node.data.param},},};}
         return node;
       }),
     );
   
-  }, [nodes, setEdges, setNodes]);
+  }, [onNodesChange]);
   
   const onReconnectEnd = useCallback((_, edge) => {
-    const node_data = nodes.find((node) => node.id === edge.source);
-    const nodeToRemove = nodes.find((node) => node.id === edge.target);
-    const nodeToRemoveLabel = nodeToRemove.data.label;
-    const nodeToRemoveParams = nodeToRemove.data.param;
-    
-    const removeflow = (nodeToRemove, nodeToRemoveParams) => { 
-      const { [nodeToRemoveLabel]: _, ...newData } = nodeToRemove.data.flow;
-      setNodes((nds) =>
-        nds.map((node) => {
-          if (node.id === edge.target) {
-            // it's important that you create a new node object
-            // in order to notify react flow about the change
-            return { ...node, data: { ...node.data, flow: {[nodeToRemoveLabel] : nodeToRemoveParams},},};}
-            
-          return node;
-        }),
-    );};
 
     if (!edgeReconnectSuccessful.current) {
         setEdges((eds) => eds.filter((e) => e.id !== edge.id));
-        removeflow(nodeToRemove, nodeToRemoveParams)
     }
     
     edgeReconnectSuccessful.current = true;
-  }, [nodes, setEdges, setNodes]);
+  }, []);
 
 
 

@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react';
 import { useParams } from "react-router-dom";
-import query from '../query/query';
+import query from '../query/BucketQuery';
 
 import {
   Handle,
@@ -25,6 +25,7 @@ function BucketNode({ id, data }) {
   }, [Bucket_list]);
   const node = useNodesData(id)
   const label = node.data.label
+  console.log(node)
 
   return (
     <div

@@ -19,12 +19,11 @@ export default function Dashboard() {
 function Parent() {
   const { cookies } = useParams();
   console.log(cookies)
-
   return (
     <div id="contact">
         <h1>Hello! Welcome to Dashboard. Your cookies is : {`${cookies}`}</h1>
         <></>
-        <Outlet />
+        <Outlet context={{cookies}}/>
     </div>
     
   );

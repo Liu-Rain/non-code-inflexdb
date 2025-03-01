@@ -4,5 +4,5 @@ from . import views
 urlpatterns = [
     path("", views.home),
     path("login/", views.login),
-    path("query/", views.query),
+    path("bucketquery/", views.bucketquery),
 ]

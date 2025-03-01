@@ -7,7 +7,7 @@ import {
   useNodesData,
   useNodeConnections,
 } from '@xyflow/react';
-import Query from "./query"
+import Query from "./BucketQuery"
 //import { isTextNode, type MyNode } from './initialElements';
 
 
