@@ -25,7 +25,6 @@ function BucketNode({ id, data }) {
   }, [Bucket_list]);
   const node = useNodesData(id)
   const label = node.data.label
-  console.log(node)
 
   return (
     <div

@@ -5,4 +5,5 @@ urlpatterns = [
     path("", views.home),
     path("login/", views.login),
     path("bucketquery/", views.bucketquery),
+    path("meansurementquery/", views.meansurementquery),
 ]

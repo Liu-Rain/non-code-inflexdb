@@ -1,7 +1,8 @@
 import React, { useCallback } from 'react';
 import { useReactFlow } from '@xyflow/react';
  
-export default function ContextMenu({
+export default function MeansurementMenu({
+  reactflowfunction,
   id,
   top,
   left,
@@ -9,10 +10,10 @@ export default function ContextMenu({
   bottom,
   list,
   ...props
-  
+	
 }) {
-  console.log(list)
-  const { getNode, setNodes, addNodes, setEdges, updateNodeData, getEdges, setNode } = useReactFlow();
+  const { getNode, setNodes, addNodes, setEdges, updateNodeData, getEdges, setNode } = reactflowfunction;
+
   const duplicateNode = useCallback(() => {
     const node = getNode(id);
     const position = {

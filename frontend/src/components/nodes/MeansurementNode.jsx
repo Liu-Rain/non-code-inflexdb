@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react';
 import { useParams } from "react-router-dom";
-import query from '../query/BucketQuery';
+import query from '../query/MeansurementQuery';
 
 import {
   Handle,
@@ -15,14 +15,15 @@ import {
 /* use to create the bucket node */
 function MeansurementNode({ id, data }) {
   const { updateNodeData } = useReactFlow();
-  //const Bucket_list = query(data.flow.Cookies);
-  //const Bucket_array = Object.keys(Bucket_list);
+  const Meansurement_array = query(data.flow);
+  console.log(Meansurement_array)
 
-  function flowChanged(name) {
+  useEffect(() => {
     updateNodeData(id, (node) => {
-      return { ...node.data, flow: {...node.data.flow, [this_node.data.name]: name}};
+      return { ...node.data, param: Meansurement_array  };
     });
-  }
+    
+  }, [Meansurement_array]);
 
   const node = useNodesData(id)
   const label = node.data.label
@@ -30,7 +31,7 @@ function MeansurementNode({ id, data }) {
 
   return (
     <div
-      className="dndnode"
+      className="dndnode" 
     >
       <div>
       Meansurement

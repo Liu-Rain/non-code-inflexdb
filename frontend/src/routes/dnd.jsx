@@ -24,7 +24,7 @@ import BucketNode from '../components/nodes/BucketNode';
 import FieldNode from '../components/nodes/FieldNode';
 import MeansurementNode from '../components/nodes/MeansurementNode';
 
-import ContextMenu from '../components/nodes/Menu';
+import ContextMenu from '../components/menu/MainMenu';
 import TagNode from '../components/nodes/TagNode';
 
 
