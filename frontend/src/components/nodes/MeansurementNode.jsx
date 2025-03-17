@@ -8,7 +8,33 @@ import {
   useHandleConnections,
   useNodesData,
   useReactFlow,
+  useNodeConnections
 } from '@xyflow/react';
+
+
+
+function CustomHandle({ id, onChange }) {
+  const connections = useNodeConnections({
+    handleType: 'target',
+    handleId: id,
+  });
+  const nodeData = useNodesData(connections?.[0]?.source || "");
+ 
+  useEffect(() => {
+    onChange("");
+  }, [nodeData]);
+ 
+  return (
+    <div>
+      <Handle
+        type="target"
+        position={Position.Top}
+        id={id}
+        className="handle"
+      />
+    </div>
+  );
+}
 
 
 
@@ -16,7 +42,6 @@ import {
 function MeansurementNode({ id, data }) {
   const { updateNodeData } = useReactFlow();
   const Meansurement_array = query(data.flow);
-  console.log(Meansurement_array)
 
   useEffect(() => {
     updateNodeData(id, (node) => {
@@ -27,7 +52,6 @@ function MeansurementNode({ id, data }) {
 
   const node = useNodesData(id)
   const label = node.data.label
-  console.log(node)
 
   return (
     <div
@@ -39,7 +63,16 @@ function MeansurementNode({ id, data }) {
         {label}
       </div>
       <Handle type="source" position={Position.Bottom} id="output" onChange={updateNodeData} />
-      <Handle type="target" position={Position.Top} id="input" />
+      
+      <CustomHandle
+        id="input"
+        onChange={(label) => {
+          updateNodeData(id, (node) => {
+            return { label: label };
+          });
+        }}
+      />
+
     </div>
   );
 }
