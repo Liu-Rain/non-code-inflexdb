@@ -7,4 +7,6 @@ urlpatterns = [
     path("bucketquery/", views.bucketquery),
     path("meansurementquery/", views.meansurementquery),
     path("fieldquery/", views.fieldquery),
+    path("resultquery/", views.resultquery),
+    
 ]

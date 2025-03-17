@@ -1,11 +1,13 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useParams } from "react-router-dom";
 import query from '../query/FieldQuery';
+import ResultQuery from '../query/ResultQuery';
+import DataVisualizationPanel from '../grafana/Grafana'
+import { useData } from "../grafana/Data";
 
 import {
   Handle,
   Position,
-  useHandleConnections,
   useNodesData,
   useReactFlow,
   useNodeConnections
@@ -42,7 +44,8 @@ function CustomHandle({ id, onChange }) {
 function FieldNode({ id, data }) {
   const { updateNodeData } = useReactFlow();
   const Field_array = query(data.flow);
-  console.log(Field_array)
+  const [result, setResult] = useState()
+  const [ _, setData ] = useData();
 
   useEffect(() => {
     updateNodeData(id, (node) => {
@@ -53,7 +56,9 @@ function FieldNode({ id, data }) {
 
   const node = useNodesData(id)
   const label = node.data.label
-  console.log(node)
+  const result_array = ResultQuery(data.flow)
+  console.log(result_array)
+  setData(result_array)
 
   return (
     <div
@@ -74,7 +79,6 @@ function FieldNode({ id, data }) {
           });
         }}
       />
-
     </div>
   );
 }

@@ -26,8 +26,8 @@ import MeansurementNode from '../components/nodes/MeansurementNode';
 
 import ContextMenu from '../components/menu/MainMenu';
 import TagNode from '../components/nodes/TagNode';
-
-
+import DataVisualizationPanel from '../components/grafana/Grafana'
+import { DataProvider, useData } from '../components/grafana/Data';
 
 
 const nodeTypes = {  bucket: BucketNode, field: FieldNode, meansurement: MeansurementNode, tag: TagNode,};
@@ -270,10 +270,19 @@ const ReceiverComponent = ({ data }) => {
   );
 };
 
-export default () => (
+export default () => {
+  const [result_data] = useData();
+  
+  return(
+
   <ReactFlowProvider>
     <DnDProvider>
       <DnDFlow />
+      <DataProvider>
+        <DataVisualizationPanel data={result_data} />
+      </DataProvider>
     </DnDProvider>
   </ReactFlowProvider>
-);
+  
+  
+);}

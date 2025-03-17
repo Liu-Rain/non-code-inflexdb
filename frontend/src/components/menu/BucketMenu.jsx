@@ -48,7 +48,7 @@ export default function BucketMenu({
       });
       return 0
     }) // this_node.data seems not update before the edge's node got updated
-  
+    
   }
 
   

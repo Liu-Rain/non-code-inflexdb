@@ -200,3 +200,64 @@ def fieldquery(request):
 
     return JsonResponse({"messages": f'{response.text}', "code": f'{response.status_code}', "cookies" : f'{cookies}', "bucket": bucket, "meansurement":meansurement, "data": fields}, status = 200)
     
+
+@csrf_exempt #this is how to fix 403 forbidden by 
+def resultquery(request):
+    body = json.loads(request.body)
+    cookies_value = body.get('cookies')
+    bucket = body.get('bucket')
+    meansurement = body.get('meansurement')
+    field = body.get('field')
+    cookies = requests.cookies.RequestsCookieJar()
+    cookies.set(
+        name="influxdb-oss-session",
+        value=cookies_value,
+        domain="influxdb2.local",
+        path="/api/"
+    )#convert cookies back to RequestsCookieJar
+
+
+    headers = {
+            "Content-Type": "application/vnd.flux",
+            "Accept": "application/csv",
+        }
+    url = "http://influxdb2:8086/api/v2/query" #need to soft code org
+    params = {
+    "org": "docs"  # Replace with your actual organization name
+    }
+    data = f'''from(bucket: "{bucket}")
+        |> range(start: -48h)
+        |> filter(fn: (r) => r._measurement == "{meansurement}")
+        |> filter(fn: (r) => r._field == "{field}")
+        '''
+
+
+
+
+    response = requests.post(url, headers=headers, cookies=cookies, params=params, data=data) #use get instead of post
+    csv_content = response.text.strip()
+    csv_reader = csv.reader(io.StringIO(csv_content))
+    rows = list(csv_reader)
+
+    # Extract measurement names from the last column (_value)
+    result = []
+    for row in rows:
+        if len(row) >= 4 and row[3] not in ("_value", ""):  # Skip header row and empty values
+            result.append(row[3])
+
+    #recieve = recieve.get("buckets")
+    #bucket_dict = dict()
+    #if recieve:
+    #    for bucket in recieve:  # Adjust based on response structure
+    #        bucket_dict.update({bucket['name']:bucket['id']})
+
+    
+    #if response.status_code == 200:
+    #    messages.success(request, f"Query Results:={response.text}")
+    #    return JsonResponse({"status": f'{response.status_code}'}, status=200)
+
+    #else:
+    #    messages.success(request, f"Error:={response.status_code}, {response.text}")
+
+    return JsonResponse({"messages": f'{response.text}', "code": f'{response.status_code}', "cookies" : f'{cookies}', "bucket": bucket, "meansurement":meansurement, "field":field ,"data": rows}, status = 200)
+    
