@@ -2,15 +2,15 @@ import { useCallback, useEffect, useState } from 'react';
 import { useParams } from "react-router-dom";
 import query from '../query/FieldQuery';
 import ResultQuery from '../query/ResultQuery';
-import DataVisualizationPanel from '../grafana/Grafana'
-import { useData } from "../grafana/Data";
+import DataVisualizationPanel from '../Chart/Chart'
+import { useData } from "../Chart/Data";
 
 import {
   Handle,
   Position,
   useNodesData,
   useReactFlow,
-  useNodeConnections
+  useNodeConnections,
 } from '@xyflow/react';
 
 
@@ -40,7 +40,6 @@ function CustomHandle({ id, onChange }) {
 
 
 
-/* use to create the bucket node */
 function FieldNode({ id, data }) {
   const { updateNodeData } = useReactFlow();
   const Field_array = query(data.flow);
@@ -57,8 +56,9 @@ function FieldNode({ id, data }) {
   const node = useNodesData(id)
   const label = node.data.label
   const result_array = ResultQuery(data.flow)
-  console.log(result_array)
-  setData(result_array)
+  useEffect(() => {
+    setData(result_array); // Properly updating data
+  }, [result_array]);
 
   return (
     <div

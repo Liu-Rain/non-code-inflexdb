@@ -26,8 +26,8 @@ import MeansurementNode from '../components/nodes/MeansurementNode';
 
 import ContextMenu from '../components/menu/MainMenu';
 import TagNode from '../components/nodes/TagNode';
-import DataVisualizationPanel from '../components/grafana/Grafana'
-import { DataProvider, useData } from '../components/grafana/Data';
+import DataVisualizationPanel from '../components/Chart/Chart'
+import { DataProvider, useData } from '../components/Chart/Data';
 
 
 const nodeTypes = {  bucket: BucketNode, field: FieldNode, meansurement: MeansurementNode, tag: TagNode,};
@@ -218,6 +218,7 @@ const DnDFlow = () => {
   const onPaneClick = useCallback(() => setMenu(null), [setMenu]);
 
 
+
   
  
   return (
@@ -252,6 +253,8 @@ const DnDFlow = () => {
         {/*<ReceiverComponent data={receiverData} />*/}
       </div>
       <Sidebar />
+
+
     </div>
   );
 };
@@ -272,13 +275,13 @@ const ReceiverComponent = ({ data }) => {
 
 export default () => {
   const [result_data] = useData();
-  
+  console.log(result_data)
   return(
 
   <ReactFlowProvider>
     <DnDProvider>
-      <DnDFlow />
       <DataProvider>
+        <DnDFlow />
         <DataVisualizationPanel data={result_data} />
       </DataProvider>
     </DnDProvider>
