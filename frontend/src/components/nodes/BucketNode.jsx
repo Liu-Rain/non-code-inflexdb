@@ -35,7 +35,7 @@ function BucketNode({ id, data }) {
         <br />
         {label}
       </div>
-      <Handle type="source" position={Position.Bottom} id="output" />
+      <Handle type="source" position={Position.Right} id="output"   />
     </div>
   );
 }

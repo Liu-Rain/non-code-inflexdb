@@ -28,7 +28,7 @@ function CustomHandle({ id, onChange }) {
     <div>
       <Handle
         type="target"
-        position={Position.Top}
+        position={Position.Left}
         id={id}
         className="handle"
       />
@@ -62,7 +62,7 @@ function MeansurementNode({ id, data }) {
         <br />
         {label}
       </div>
-      <Handle type="source" position={Position.Bottom} id="output" onChange={updateNodeData} />
+      <Handle type="source" position={Position.Right} id="output" onChange={updateNodeData} />
       
       <CustomHandle
         id="input"

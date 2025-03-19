@@ -51,7 +51,7 @@ const ChartVisualizer = () => {
           ))}
         </LineChart>
       ) : (
-        <p>Loading data...</p>
+        <p>Please Selecting Data...</p>
       )}
     </ResponsiveContainer>
   );

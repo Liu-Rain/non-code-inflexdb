@@ -4,6 +4,31 @@
 }
 
 
+.react-flow {
+    /* Custom Variables */
+    --xy-theme-selected: #F57DBD;
+    --xy-theme-hover: #C5C5C5;
+    --xy-theme-edge-hover: black;
+    --xy-theme-color-focus: #E8E8E8;
+ 
+    /* Built-in Variables see https://reactflow.dev/learn/customization/theming */
+    --xy-node-border-default: 1px solid #EDEDED;
+  
+    --xy-node-boxshadow-default: 
+      0px 3.54px 4.55px 0px #00000005, 
+      0px 3.54px 4.55px 0px #0000000D, 
+      0px 0.51px 1.01px 0px #0000001A;
+  
+    --xy-node-border-radius-default: 8px;
+  
+    --xy-handle-background-color-default: #ffffff;
+    --xy-handle-border-color-default: #AAAAAA;
+  
+    --xy-edge-label-color-default: #505050;
+}
+
+
+
 .drag-drop-area {
     border: 1px solid #ccc;
     position: relative;
@@ -26,6 +51,43 @@ margin-bottom: 10px;
 }
 
 
+.react-flow__edge.selectable:hover .react-flow__edge-path,
+.react-flow__edge.selectable.selected .react-flow__edge-path {
+    stroke: var(--xy-theme-edge-hover);
+    
+}
+
+.react-flow__edge-path {
+    stroke-dasharray: 6, 6; /* Creates dashed line */
+    stroke-width: 1; /* Adjust thickness */
+    animation: dash-animation 1s linear infinite;
+    stroke-dashoffset: 0;
+
+}
+
+@keyframes dash-animation {
+    to {
+        stroke-dashoffset: -12;
+    }
+}
+
+.react-flow__handle {
+    background-color: var(--xy-handle-background-color-default);
+}
+
+.react-flow__handle.connectionindicator:hover {
+    pointer-events: all;
+    border-color: var(--xy-theme-edge-hover);
+    background-color: white;
+}
+
+.react-flow__handle.connectionindicator:focus , 
+.react-flow__handle.connectingfrom,
+.react-flow__handle.connectingto {
+    border-color: var(--xy-theme-edge-hover);
+}
+
+
 
 .dndflow {
     flex-direction: column;
@@ -37,37 +99,57 @@ margin-bottom: 10px;
 .dndflow aside {
     border-right: 1px solid #eee;
     padding: 15px 10px;
-    font-size: 12px;
+    font-size: 14px;
     background: #fcfcfc;
+    display: flex;
+    flex-direction: column;
 }
 
 .dndflow aside .description {
     margin-bottom: 10px;
+    font-size: 20px;
+    font-style: oblique;
 }
 
-.dndflow .dndnode {
+.side-dndnode {
+    flex: 1;
     height: 20px;
     padding: 4px;
     border: 1px solid #1a192b;
-    border-radius: 2px;
+    border-radius: 10px;
     margin-bottom: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: grab;
+    font-size: 26px;
 }
 
-.dndflow .dndnode.input {
-    border-color: #0041d0;
+.dndflow .dndnode {
+
+    box-shadow: var(--xy-node-boxshadow-default);
+    border-radius: var(--xy-node-border-radius-default);
+    background-color: var(--xy-node-background-color-default);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 10px;
+    font-size: 12px;
+    flex-direction: column;
+    border: var(--xy-node-border-default);
+    color: var(--xy-node-color, var(--xy-node-color-default));
 }
 
-.dndflow .dndnode.output {
-    border-color: #ff0072;
-}
+
+
+
+
 
 .dndflow .reactflow-wrapper {
-    flex-grow: 1;
     height: 100%;
+    width: 100vw;
+    height: 50vh;
 }
 
 .dndflow .selectall {
@@ -107,3 +189,5 @@ margin-bottom: 10px;
   .context-menu button:hover {
     background: white;
   }
+
+  

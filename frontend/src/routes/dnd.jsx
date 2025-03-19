@@ -41,7 +41,7 @@ const DnDFlow = () => {
   const { cookies } = useOutletContext(); 
   const initialNodes = [
 
-    { id: '1', type: 'bucket', data: {label: "bucket", name: "Bucket", param: 'param1', flow:{ Cookies : cookies}}, position: { x: 250, y: 5 }, },
+    { id: '1', type: 'bucket', data: {label: "", name: "Bucket", param: 'param1', flow:{ Cookies : cookies}}, position: { x: 250, y: 5 }, },
     //{ id: 'result', type: 'result', data: {label: "result_lable", name: "result_name", param: 'result_param', flow:{result : "_"}}, position: { x: 300, y: -75 }, },
   ]; //can only use "data" to store info
 
@@ -223,7 +223,7 @@ const DnDFlow = () => {
  
   return (
     <div className="dndflow">
-      <div className="reactflow-wrapper" style={{ width: '50vw', height: '50vh' }}>
+      <div className="reactflow-wrapper">
         <ReactFlow
           ref={ref}
           nodes={nodes}

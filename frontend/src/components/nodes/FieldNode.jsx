@@ -30,7 +30,7 @@ function CustomHandle({ id, onChange }) {
     <div>
       <Handle
         type="target"
-        position={Position.Top}
+        position={Position.Left}
         id={id}
         className="handle"
       />
@@ -69,7 +69,6 @@ function FieldNode({ id, data }) {
         <br />
         {label}
       </div>
-      <Handle type="source" position={Position.Bottom} id="output"  />
       
       <CustomHandle
         id="input"

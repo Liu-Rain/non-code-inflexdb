@@ -23,22 +23,16 @@ export default () => {
   /*const{id, type, data} = nodesData[0]? nodesData[0]: "0";*/
 
   return (
-    <aside>
-      <div className="description">You can drag these nodes to the pane on the right.</div>
-      <div className="dndnode" onDragStart={(event) => onDragStart(event, {type:"bucket", label: "", name: "Bucket", param: 'param1', flow: {Cookies: "", Bucket: "param1"}})} draggable >
+    <aside className='sidebar'>
+      <div className="description">🌟 Drag the nodes to the pane.</div>
+      <div className="side-dndnode" onDragStart={(event) => onDragStart(event, {type:"bucket", label: "", name: "Bucket", param: 'param1', flow: {Cookies: "", Bucket: "param1"}})} draggable >
         Bucket 
       </div>
-      <div className="dndnode" onDragStart={(event) => onDragStart(event, {type:"meansurement", label: "", name: "Meansurement", param: [], flow: {Meansurement: "param1"}})} draggable >
+      <div className="side-dndnode" onDragStart={(event) => onDragStart(event, {type:"meansurement", label: "", name: "Meansurement", param: [], flow: {Meansurement: "param1"}})} draggable >
         Meansurement 
       </div>
-      <div className="dndnode" onDragStart={(event) => onDragStart(event, {type:"field", label: "", name: "Field", param: [],  flow: {Field: "param2"}})} draggable>
+      <div className="side-dndnode" onDragStart={(event) => onDragStart(event, {type:"field", label: "", name: "Field", param: [],  flow: {Field: "param2"}})} draggable>
         Fileds
-      </div>
-      <div className="dndnode" onDragStart={(event) => onDragStart(event, {type:"tag", label: "", name: "Tag", param: [],  flow: {Tag: "param3"}})} draggable>
-        Tags
-      </div>
-      <div className="dndnode output" onDragStart={(event) => onDragStart(event, {type:"output", label: "", name: "Time", param: [],  flow: {Time: "param4"}})} draggable>
-        Time
       </div>
     </aside>
   );
