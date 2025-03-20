@@ -1,4 +1,7 @@
-# It is readme file
+# Non-code-inflexdb
+## This is a practice project to integrate frontend and backend.
+## Tach stack frontend:{ react, reactflow, reactchart, reactrouter }, backend:{django}, db:{inflexdb}, Docker
+
 
 ### Run this code first to build image
 ```bash
@@ -19,6 +22,13 @@ $ docker run -v /Users/limeilin/Desktop/Software/Docker/non-code-inflexdb:/app:r
 
 ### Run docker compose to build all file from .yml file
 ```bash
-$ docker-compose up -d --build #Some thing go wrong with this code. needs fix.
+$ docker-compose up -d --build
 # docker-compose up(build docker compose) -d(detached mode, run terminal on other place ) --build(forces to rebuild the file)
 ```
+
+### Deactive docker compose 
+```bash
+$ docker-compose down -v    #Some thing go wrong with this code. needs fix.
+```
+
+
